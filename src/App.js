@@ -1,6 +1,6 @@
-import logo from './logo.svg';
 import {Navbar, NavbarBrand} from 'reactstrap';
-import './App.css';
+import Menu from './components/MenuComponent';
+import { DISHES } from './shared/dishes';
 
 function App() {
   return (
@@ -8,10 +8,11 @@ function App() {
       <Navbar dark color="primary">
         <div className="container">        
           <NavbarBrand href="/">
-            configurng bootstrap
+            Ristorante Con Fusion
           </NavbarBrand>
         </div>
       </Navbar>
+      <Menu dishes={DISHES}/>
     </div>
   );
 }
