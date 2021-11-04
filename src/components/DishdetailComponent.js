@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
-class DishDetail extends Component {
 
-    renderDish(dish) {
+
+    function RenderDish({dish}) {
         return (
             <Card>
                 <CardImg width="100%" object src={dish.image} alt={dish.name} />
@@ -14,49 +14,50 @@ class DishDetail extends Component {
             </Card>
         );
     }
-    getDate(dateString){
-        const dateOnly=dateString.split("T")[0];
-        const splitDate=dateOnly.split("-");
-        const day=splitDate[2];
-        let month=splitDate[1];
-        const year=splitDate[0];
-        if(month==="01"){
-            month="Jan";
-        }else if(month==="02"){
-            month="Feb";
-        }
-        else if(month==="03"){
-            month="Mar";
-        }
-        else if(month==="04"){
-            month="Apr";
-        }
-        else if(month==="05"){
-            month="May";
-        }
-        else if(month==="06"){
-            month="Jun";
-        }
-        else if(month==="07"){
-            month="Jul";
-        }
-        else if(month==="08"){
-            month="Aug";
-        }
-        else if(month==="09"){
-            month="Sep";
-        }
-        else if(month==="10"){
-            month="Oct";
-        }
-        else if(month==="11"){
-            month="Nov";
-        }
-        else if(month==="12"){
-            month="Dec";
-        }
-        return month+" "+day+", "+year;
-    }
+
+    // getDate(dateString){
+    //     const dateOnly=dateString.split("T")[0];
+    //     const splitDate=dateOnly.split("-");
+    //     const day=splitDate[2];
+    //     let month=splitDate[1];
+    //     const year=splitDate[0];
+    //     if(month==="01"){
+    //         month="Jan";
+    //     }else if(month==="02"){
+    //         month="Feb";
+    //     }
+    //     else if(month==="03"){
+    //         month="Mar";
+    //     }
+    //     else if(month==="04"){
+    //         month="Apr";
+    //     }
+    //     else if(month==="05"){
+    //         month="May";
+    //     }
+    //     else if(month==="06"){
+    //         month="Jun";
+    //     }
+    //     else if(month==="07"){
+    //         month="Jul";
+    //     }
+    //     else if(month==="08"){
+    //         month="Aug";
+    //     }
+    //     else if(month==="09"){
+    //         month="Sep";
+    //     }
+    //     else if(month==="10"){
+    //         month="Oct";
+    //     }
+    //     else if(month==="11"){
+    //         month="Nov";
+    //     }
+    //     else if(month==="12"){
+    //         month="Dec";
+    //     }
+    //     return month+" "+day+", "+year;
+    // }
     // renderComments(comments) {
     //     if (comments != null) {
     //         for (let i = 0; i < comments.length; i++) {
@@ -106,7 +107,7 @@ class DishDetail extends Component {
     //         );
     //     }
     // }
-    renderComments(comments){
+    function RenderComments({comments}){
         if(comments == null){
             return(<div></div>);
         }
@@ -135,27 +136,30 @@ class DishDetail extends Component {
             </div>
         );
     }
-    render() {
-        if (this.props.dish != null) {
-            return (
-                <div class="container">
-                <div className="row">
-                    <div className="col-12 col-md-5 m-1">
-                        {this.renderDish(this.props.dish)}
-                    </div>
-                    <div className="col-12 col-md-5 m-1">
-                        {this.renderComments(this.props.dish.comments)}
-                    </div>
+    
+const DishDetail = (props) =>
+{
+    if (props.dish != null) {
+        return (
+            <div class="container">
+            <div className="row">
+                <div className="col-12 col-md-5 m-1">
+                    <RenderDish dish={props.dish} />
                 </div>
+                <div className="col-12 col-md-5 m-1">
+                    <RenderComments comments={props.dish.comments} />
                 </div>
-            );
-        }
-        else {
-            return (
-                <div></div>
-            );
-        }
+            </div>
+            </div>
+        );
     }
-}
+    else {
+        return (
+            <div></div>
+        );
+    }
 
+
+}
+    
 export default DishDetail;
