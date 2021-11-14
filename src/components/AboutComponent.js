@@ -25,7 +25,7 @@ function About(props) {
 
     const leaders = props.leaders.map((leader) => {
         return (
-            <p>Leader {leader.name}</p>
+            <RenderLeader leader={leader}/> // taken from codeReview
         );
     });
 
@@ -84,6 +84,7 @@ function About(props) {
                     <h2>Corporate Leadership</h2>
                 </div>
                 <div className="col-12">
+                {/* and here that leader constant could have been called instead off RenderLeader*/}
                     <Media list>
                         <RenderLeader leaders={props.leaders}></RenderLeader>
                     </Media>
