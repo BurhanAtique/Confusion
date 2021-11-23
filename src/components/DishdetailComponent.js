@@ -1,7 +1,110 @@
-import React from 'react';
-import { Card, CardImg, CardText, CardBody, CardTitle,Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import React,{Component} from 'react';
+import { Row, Form,FormFeedback, FormGroup, Input, Label,Modal,ModalHeader, ModalBody, Card, CardImg, CardText, CardBody, CardTitle,Breadcrumb, BreadcrumbItem, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Control, LocalForm, Errors } from 'react-redux-form';
 
+    class CommentForm extends Component{
+        constructor(props){
+            super(props);
+            
+            this.state = {
+                isModalOpen:false,
+                name: '',
+                touched:false,
+                rating:'',
+                message:'',
+            }
+            
+            this.handleBlur=this.handleBlur.bind(this);
+            this.toggleModal=this.toggleModal.bind(this);
+            this.handleSubmit=this.handleSubmit.bind(this);
+            this.handleInputChange=this.handleInputChange.bind(this);
+
+        }
+        toggleModal(){
+            this.setState({
+                isModalOpen:!this.state.isModalOpen
+            });
+        }
+
+        handleSubmit(event) {
+            console.log('Current State is: ' + JSON.stringify(this.state));
+            alert('Current State is: ' + JSON.stringify(this.state));
+            event.preventDefault();
+        }
+
+        handleInputChange(event) {
+            const target = event.target;
+            const value = target.value;
+            const name = target.name;
+            this.setState({
+              [name]: value
+            });
+        }
+
+        handleBlur = () => (evt) => {
+            this.setState({
+                touched: true 
+            });
+        }
+
+        validate(name) {
+            const errors = {
+                name: '',
+            };
+            if (this.state.touched && name.length < 3)
+            errors.name = 'Your Name should be >= 3 characters';
+            else if (this.state.touched && name.length > 15)
+            errors.name = 'First Name should be <= 15 characters';
+
+            return errors;
+        }
+
+        render(){
+            const errors= this.validate(this.state.name);
+            return(
+                <div>
+                <Button outline onClick={this.toggleModal}><span className="fa fa-pencil"></span> Submit Comment</Button>
+                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
+                    <ModalBody>
+                    <Form onSubmit={this.handleSubmit}>
+                            <FormGroup>
+                                <Label htmlFor="rating">Rating</Label>
+                                <Input type="select" name="rating"
+                                            value={this.state.rating}
+                                            onChange={this.handleInputChange}>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </Input>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="name">Your Name</Label>
+                                <Input type="text" id="name" name="name" placeholder="Your name"
+                                    value={this.state.name}
+                                    valid={errors.name === ''}
+                                    invalid={errors.name !== ''}
+                                    onBlur={this.handleBlur()}
+                                    onChange={this.handleInputChange} />
+                                    <FormFeedback>{errors.name}</FormFeedback>
+                            </FormGroup>
+                            <FormGroup>
+                            <Label htmlFor="message">Comment</Label>
+                                <Input type="textarea" id="message" name="message"
+                                        value={this.state.message}
+                                        onChange={this.handleInputChange}></Input>
+                            </FormGroup>
+                            <Button type="submit" value="submit" color="primary">Submit</Button>
+                        </Form>
+                    </ModalBody>
+                </Modal>
+                </div>
+            );
+        }
+    }
 
     function RenderDish({dish}) {
         return (
@@ -15,98 +118,6 @@ import { Link } from 'react-router-dom';
         );
     }
 
-    // getDate(dateString){
-    //     const dateOnly=dateString.split("T")[0];
-    //     const splitDate=dateOnly.split("-");
-    //     const day=splitDate[2];
-    //     let month=splitDate[1];
-    //     const year=splitDate[0];
-    //     if(month==="01"){
-    //         month="Jan";
-    //     }else if(month==="02"){
-    //         month="Feb";
-    //     }
-    //     else if(month==="03"){
-    //         month="Mar";
-    //     }
-    //     else if(month==="04"){
-    //         month="Apr";
-    //     }
-    //     else if(month==="05"){
-    //         month="May";
-    //     }
-    //     else if(month==="06"){
-    //         month="Jun";
-    //     }
-    //     else if(month==="07"){
-    //         month="Jul";
-    //     }
-    //     else if(month==="08"){
-    //         month="Aug";
-    //     }
-    //     else if(month==="09"){
-    //         month="Sep";
-    //     }
-    //     else if(month==="10"){
-    //         month="Oct";
-    //     }
-    //     else if(month==="11"){
-    //         month="Nov";
-    //     }
-    //     else if(month==="12"){
-    //         month="Dec";
-    //     }
-    //     return month+" "+day+", "+year;
-    // }
-    // renderComments(comments) {
-    //     if (comments != null) {
-    //         for (let i = 0; i < comments.length; i++) {
-    //             return ([
-    //                 <div className="list-unstyled">
-
-    //                     <p className="list-unstyled">
-    //                         {comments[0].comment}
-    //                     </p>
-    //                     <p>
-    //                         --{comments[0].author} , {this.getDate(comments[0].date)}
-    //                     </p>
-
-    //                     <p>
-    //                         {comments[1].comment}
-    //                     </p>
-    //                     <p>
-    //                         --{comments[1].author} , {this.getDate(comments[1].date)}
-    //                     </p>
-    //                     <p>
-    //                         {comments[2].comment}
-    //                     </p>
-    //                     <p>
-    //                         --{comments[2].author} , {this.getDate(comments[2].date)}
-    //                     </p>
-    //                     <p>
-    //                         {comments[3].comment}
-    //                     </p>
-    //                     <p>
-    //                         --{comments[3].author} , {this.getDate(comments[3].date)}
-    //                     </p>
-    //                     <p>
-    //                         {comments[4].comment}
-    //                     </p>
-    //                     <p>
-    //                         --{comments[4].author} , {this.getDate(comments[4].date)}
-    //                     </p>
-
-
-    //                 </div>
-    //             ]);
-    //         }
-    //     } else {
-    //         return (
-    //             <div>
-    //             </div>
-    //         );
-    //     }
-    // }
     function RenderComments({comments}){
         if(comments == null){
             return(<div></div>);
@@ -138,7 +149,7 @@ import { Link } from 'react-router-dom';
     }
     
 const DishDetail = (props) =>
-{
+{   
     if (props.dish != null) {
         return (
             <div className="container">
@@ -159,7 +170,9 @@ const DishDetail = (props) =>
                     </div>
                     <div className="col-12 col-md-5 m-1">
                         <RenderComments comments={props.comments} />
+                        <CommentForm/>
                     </div>
+                   
                 </div>
                 </div>
         );
