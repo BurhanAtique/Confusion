@@ -1,6 +1,4 @@
-import {createStore} from 'redux';
-import { Reducer, initialState } from './reducer';
-import {combineReducers} from 'redux';
+import {createStore, combineReducers} from 'redux';
 import { Dishes } from './dishes';
 import { Comments } from './comments';
 import { Promotions } from './promotions';
